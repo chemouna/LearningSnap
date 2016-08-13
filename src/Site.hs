@@ -27,8 +27,12 @@ import           Heist.Splices.BindStrict
 import           Application
 
 
+loopH :: AppHandler ()
+loopH = heistLocal (bindSplice "loop" loopSplice) $ render "loop"
+
 routes :: String -> [(ByteString, Handler App App ())]
 routes stpth = [
+          ("/loop", loopH)
           ("/", serveDirectory "static")]
 
 app :: SnapletInit App App
