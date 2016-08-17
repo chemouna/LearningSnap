@@ -41,7 +41,7 @@ Executable LearningSnap
                      , filepath
                      , text >= 1.2.2.1
                      , time >= 1.5.0.1
-
+                     , map-syntax
 
   if flag(development)
     build-depends:
@@ -58,6 +58,7 @@ Executable LearningSnap
       ghc-options: -threaded -Wall -fwarn-tabs -funbox-strict-fields -O2
                    -fno-warn-orphans -fno-warn-unused-do-bind
     else
+
       ghc-options: -threaded -Wall -fwarn-tabs -funbox-strict-fields -O2
                    -fno-warn-orphans
 

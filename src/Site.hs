@@ -22,18 +22,30 @@ import           Snap.Core
 import           Snap.Extras
 import           Snap.Restful
 import           Heist.Splices.BindStrict
-
+import qualified Data.Text as T 
 
 import           Application
 
+data Link = Link {
+                    link :: T.Text
+                   }
 
-loopH :: AppHandler ()
-loopH = heistLocal (bindSplice "loop" loopSplice) $ render "loop"
 
-routes :: String -> [(ByteString, Handler App App ())]
-routes stpth = [
-          ("/loop", loopH)
-          ("/", serveDirectory "static")]
+linksH :: AppHandler ()
+linksH = renderWithSplices "links" $ linksSplices
+
+linksSplices ::  Splices (SnapletISplice App)
+linksSplices = "links" ## r
+  where r = I.mapSplices (I.runChildrenWith . linkSplice) [Link (T.pack "http://localhost:8000/thread_home?cateid=1"), Link (T.pack "http://localhost:8000/thread_home?cateid=2")]
+
+linkSplice l = do
+  "link" ## I.textSplice (link l)
+
+
+routes :: [(ByteString, Handler App App ())]
+routes  = [
+            ("/links", linksH)
+          , ("/", serveDirectory "static")]
 
 app :: SnapletInit App App
 app = makeSnaplet "app" "HaskellCourses application snaplet." Nothing $ do
@@ -44,6 +56,6 @@ app = makeSnaplet "app" "HaskellCourses application snaplet." Nothing $ do
            initCookieSessionManager "site_key.txt" "sess" (Just 3600)
     a <- nestSnaplet "auth" auth $
          initJsonFileAuthManager defAuthSettings sess (stpth ++ "/users.json")
-    addRoutes (routes stpth)
+    addRoutes routes
     addAuthSplices h auth
     return $ App h s a
