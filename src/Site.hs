@@ -32,20 +32,21 @@ data Link = Link {
 
 
 linksH :: AppHandler ()
-linksH = renderWithSplices "links" $ linksSplices
+linksH = method GET (renderWithSplices "links" linksSplices)
 
 linksSplices ::  Splices (SnapletISplice App)
 linksSplices = "links" ## r
   where r = I.mapSplices (I.runChildrenWith . linkSplice) [Link (T.pack "http://localhost:8000/thread_home?cateid=1"), Link (T.pack "http://localhost:8000/thread_home?cateid=2")]
 
+-- linkSplice :: Monad n => Link -> Splices (I.Splice n)
 linkSplice l = do
   "link" ## I.textSplice (link l)
 
-
-routes :: [(ByteString, Handler App App ())]
-routes  = [
+routes :: String -> [(ByteString, AppHandler ())]
+routes stpth = [
             ("/links", linksH)
-          , ("/", serveDirectory "static")]
+          , ("/store", serveDirectory (stpth ++ "/store"))
+          , ("/",      serveDirectory "static")]
 
 app :: SnapletInit App App
 app = makeSnaplet "app" "HaskellCourses application snaplet." Nothing $ do
@@ -56,6 +57,6 @@ app = makeSnaplet "app" "HaskellCourses application snaplet." Nothing $ do
            initCookieSessionManager "site_key.txt" "sess" (Just 3600)
     a <- nestSnaplet "auth" auth $
          initJsonFileAuthManager defAuthSettings sess (stpth ++ "/users.json")
-    addRoutes routes
+    addRoutes (routes stpth)
     addAuthSplices h auth
     return $ App h s a
