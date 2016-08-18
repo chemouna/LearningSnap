@@ -23,13 +23,16 @@ Executable LearningSnap
   hs-source-dirs:      src
   main-is:             Main.hs
 
-  build-depends:       base
-                     , MonadCatchIO-transformers >= 0.3 && < 0.4
+  build-depends:       MonadCatchIO-transformers >= 0.3 && < 0.4
+                     , base
                      , bytestring >= 0.10.6.0
                      , configurator
+                     , directory
+                     , filepath
                      , haskell-docs              >=4.2.6
                      , heist
                      , lens >= 4.13.2.1
+                     , map-syntax
                      , mtl                       >= 2     && < 3
                      , restful-snap
                      , snap                      >=0.13   && < 0.15
@@ -37,11 +40,9 @@ Executable LearningSnap
                      , snap-extras >= 0.11.0.2
                      , snap-loader-static        >= 0.9   && < 0.10
                      , snap-server               >= 0.9   && < 0.10
-                     , directory
-                     , filepath
                      , text >= 1.2.2.1
                      , time >= 1.5.0.1
-                     , map-syntax
+                     , xmlhtml >= 0.2.3.4
 
   if flag(development)
     build-depends:

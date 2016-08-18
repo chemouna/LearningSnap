@@ -4,7 +4,9 @@
 
     <links>
       <div>
-        <h4><link /></h4>
+      <li>
+      <a href="/static/images/${link_id}"><link_id /></a>
+      </li>
       </div>
     </links>
 

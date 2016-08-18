@@ -12,22 +12,23 @@ import           Snap.Snaplet.Auth.Backends.JsonFile
 import           Snap.Snaplet.Heist
 import           Snap.Snaplet.Session.Backends.CookieSession
 import           Snap.Util.FileServe
-import           Control.Applicative
-import           Control.Lens
+
+
 import           Control.Monad.Trans
-import           Data.Monoid
+
 import           Heist
 import qualified Heist.Interpreted as I
 import           Snap.Core
-import           Snap.Extras
-import           Snap.Restful
-import           Heist.Splices.BindStrict
-import qualified Data.Text as T 
+
+
+
+import qualified Data.Text as T
+-- import Text.XmlHtml
 
 import           Application
 
 data Link = Link {
-                    link :: T.Text
+                    linkId :: Integer
                    }
 
 
@@ -36,11 +37,11 @@ linksH = method GET (renderWithSplices "links" linksSplices)
 
 linksSplices ::  Splices (SnapletISplice App)
 linksSplices = "links" ## r
-  where r = I.mapSplices (I.runChildrenWith . linkSplice) [Link (T.pack "http://localhost:8000/thread_home?cateid=1"), Link (T.pack "http://localhost:8000/thread_home?cateid=2")]
+  where r = I.mapSplices (I.runChildrenWith . linkSplice) [Link 1, Link 2]
 
--- linkSplice :: Monad n => Link -> Splices (I.Splice n)
+linkSplice :: Monad n => Link -> Splices (I.Splice n)
 linkSplice l = do
-  "link" ## I.textSplice (link l)
+  "link_id" ## I.textSplice (T.pack (show (linkId l)))
 
 routes :: String -> [(ByteString, AppHandler ())]
 routes stpth = [
