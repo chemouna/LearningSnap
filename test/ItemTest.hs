@@ -9,7 +9,7 @@ import Application
 
 
 itemTests :: SpecWith (SnapHspecState App)
--- itemTests = do
+--itemTests = do
 --   describe "ItemTest" $ do
 --     describe "getAllItems" $ do
 --       it "is an empty query to begin with" $ do

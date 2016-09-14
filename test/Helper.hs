@@ -2,7 +2,7 @@
 
 module Helper
        ( testApp
-        , clearDb
+        -- , clearDb
        ) where
 
 import           Application
@@ -17,18 +17,16 @@ import           Snap.Snaplet.Session.Backends.CookieSession
 
 testApp :: SnapletInit App App
 testApp = makeSnaplet "app" "Test application." Nothing $ do
-  conf <- getSnapletUserConfig
-  stpth <- liftIO (C.require conf "staticPath")
   h <- nestSnaplet "" heist $ heistInit "templates"
   s <- nestSnaplet "sess" sess $ initCookieSessionManager "site_key.txt" "sess" (Just 3600)
-  a <- nestSnaplet "auth" auth $ initJsonFileAuthManager defAuthSettings sess (stpth ++ "/users.json ")
+  a <- nestSnaplet "auth" auth $ initJsonFileAuthManager defAuthSettings sess "users.json"
   addAuthSplices h auth
   return $ App h s a
 
 
-clearDb :: Handler App App ()
-clearDb = do
+-- clearDb :: Handler App App ()
+-- clearDb = do
 --   _ <- execute "delete from video" ()
 --   _ <- execute "delete from category" ()
 --   _ <- execute "delete from config" ()
-     return ()
+--     return ()

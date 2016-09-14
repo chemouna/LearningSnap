@@ -10,7 +10,7 @@ import ItemTest
 
 main :: IO ()
 main = hspec $ snap (route routes) testApp $ do
-  afterEval (void clearDb) $ do
+  -- afterEval (void clearDb) $ do
     itemTests
 
 
