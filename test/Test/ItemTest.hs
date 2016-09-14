@@ -1,5 +1,5 @@
 {-# LANGUAGE TemplateHaskell #-}
-module ItemTest where
+module Test.ItemTest where
 
 import Application
 import Test.Hspec

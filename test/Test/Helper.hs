@@ -1,8 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Helper
+module Test.Helper
        ( testApp
-       -- , clearDb
+        , clearDb
        ) where
 
 import           Application
@@ -26,9 +26,9 @@ testApp = makeSnaplet "app" "Test application." Nothing $ do
   return $ App h s a
 
 
--- clearDb :: Handler App App ()
--- clearDb = do
+clearDb :: Handler App App ()
+clearDb = do
 --   _ <- execute "delete from video" ()
 --   _ <- execute "delete from category" ()
 --   _ <- execute "delete from config" ()
---   return ()
+     return ()

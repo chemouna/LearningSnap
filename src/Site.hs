@@ -2,6 +2,7 @@
 
 module Site
   ( app
+  , routes
   ) where
 
 import           Data.ByteString (ByteString)
@@ -43,11 +44,11 @@ linkSplice :: Monad n => Link -> Splices (I.Splice n)
 linkSplice l = do
   "link_id" ## I.textSplice (T.pack (show (linkId l)))
 
-routes :: String -> [(ByteString, AppHandler ())]
-routes stpth = [
-            ("/links", linksH)
-          , ("/store", serveDirectory (stpth ++ "/store"))
-          , ("/",      serveDirectory "static")]
+routes ::  [(ByteString, Handler App App ())]
+routes = [
+         --   ("/links", linksH)
+         -- , ("/store", serveDirectory (stpth ++ "/store"))
+           ("/",      serveDirectory "static")]
 
 app :: SnapletInit App App
 app = makeSnaplet "app" "HaskellCourses application snaplet." Nothing $ do
@@ -58,6 +59,6 @@ app = makeSnaplet "app" "HaskellCourses application snaplet." Nothing $ do
            initCookieSessionManager "site_key.txt" "sess" (Just 3600)
     a <- nestSnaplet "auth" auth $
          initJsonFileAuthManager defAuthSettings sess (stpth ++ "/users.json")
-    addRoutes (routes stpth)
+    addRoutes routes
     addAuthSplices h auth
     return $ App h s a
