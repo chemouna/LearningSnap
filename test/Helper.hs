@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Test.Helper
+module Helper
        ( testApp
         , clearDb
        ) where

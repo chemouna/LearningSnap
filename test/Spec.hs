@@ -5,10 +5,12 @@ import Site
 import Snap (route)
 import Test.Hspec
 import Test.Hspec.Snap
-import Test.Helper
-import Test.ItemTest
+import Helper
+import ItemTest
 
 main :: IO ()
 main = hspec $ snap (route routes) testApp $ do
   afterEval (void clearDb) $ do
     itemTests
+
+
